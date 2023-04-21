@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MapService } from './services/map-service/map-service.service';
 import { PopupService } from './services/popup-service/popup.service';
 import { BoundariesService } from './services/boundaries/boundaries.service';
+import { StyleService } from './services/style-service/style-service.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,12 @@ import { BoundariesService } from './services/boundaries/boundaries.service';
     NgbModule,
     HttpClientModule
   ],
-  providers: [MapService, PopupService, BoundariesService],
+  providers: [
+    MapService,
+    PopupService,
+    BoundariesService,
+    StyleService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
