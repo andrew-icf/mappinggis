@@ -2,6 +2,7 @@ import { MapService } from '../services/map-service/map-service.service';
 import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 import { BoundariesService } from './../services/boundaries/boundaries.service';
+import { StyleService } from '../services/style-service/style-service.service';
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
@@ -42,7 +43,11 @@ export class MapComponent implements AfterViewInit {
     tiles.addTo(this.map);
   }
 
-  constructor(private mapService: MapService, private boundariesService: BoundariesService) {}
+  constructor(
+    private mapService: MapService,
+    private boundariesService: BoundariesService,
+    private styleService: StyleService
+    ) {}
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -56,13 +61,7 @@ export class MapComponent implements AfterViewInit {
 
   private initStatesLayer() {
     const stateLayer = L.geoJSON(this.states, {
-      style: (feature) => ({
-        weight: 3,
-        opacity: 0.5,
-        color: '#008f68',
-        fillOpacity: 0.3,
-        fillColor: '#6DB65B'
-      }),
+      style: (feature) => (this.styleService.stateStyle.initialFeature),
       onEachFeature: (feature, layer) => {
         layer.on({
           mouseover: (e) => (this.highLightFeature(e)),
@@ -78,25 +77,13 @@ export class MapComponent implements AfterViewInit {
   private highLightFeature(e) {
     const layer = e.target;
 
-    layer.setStyle({
-      weight: 4,
-      opacity: 1.0,
-      color: '#DFA612',
-      fillOpacity: 1.0,
-      fillColor: '#3487FB'
-    });
+    layer.setStyle(this.styleService.stateStyle.highLightFeature);
   }
 
   private resetFeature(e) {
     const layer = e.target;
 
-    layer.setStyle({
-      weight: 3,
-      opacity: 0.5,
-      color: '#008f68',
-      fillOpacity: 0.8,
-      fillColor: '#6DB65B'
-    });
+    layer.setStyle(this.styleService.stateStyle.resetFeature);
   }
 
 }
